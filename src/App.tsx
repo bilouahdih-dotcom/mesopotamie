@@ -30,8 +30,8 @@ const TEL = "tel:0139470382";
 
 // Lien Uber Eats : vraie page de la boutique Mésopotamie
 const UBER_EATS = "https://www.ubereats.com/fr/store/mesopotamie/GuudggDwSwqBORrTovnyzQ";
-// ⚠️ Deliveroo : lien de recherche provisoire (à remplacer si le resto a une page Deliveroo)
-const DELIVEROO = "https://deliveroo.fr/fr/search?q=Restaurant%20M%C3%A9sopotamie%20Argenteuil";
+// Lien Deliveroo : vraie page du restaurant Mésopotamie
+const DELIVEROO = "https://deliveroo.fr/fr/menu/paris/argenteuil-centre-ville/mesopotamie-argenteuil";
 
 function DeliveryButtons({ className = "" }: { className?: string }) {
   return (
