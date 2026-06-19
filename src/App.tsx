@@ -24,6 +24,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Carousel } from "@/components/Carousel";
 import { DirectionsMap } from "@/components/DirectionsMap";
+import { Reveal } from "@/components/Reveal";
+import { CountUp } from "@/components/CountUp";
+import { Marquee } from "@/components/Marquee";
+import { Testimonials } from "@/components/Testimonials";
 
 const PHONE = "01 39 47 03 82";
 const TEL = "tel:0139470382";
@@ -156,6 +160,11 @@ export default function App() {
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b">
+        {/* Fond dégradé "aurora" */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute -right-24 -top-32 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute left-1/4 top-24 h-80 w-80 rounded-full bg-accent/50 blur-3xl" />
+        </div>
         <div className="container grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
           <div className="animate-fade-up">
             <Eyebrow><Flame className="size-3.5 text-primary" /> Grillades & spécialités turques</Eyebrow>
@@ -204,15 +213,15 @@ export default function App() {
         <div className="container grid items-center gap-12 md:grid-cols-2">
           <div className="grid grid-cols-2 gap-4">
             {[
-              { icon: Star, big: "4,3★", small: "Note moyenne" },
-              { icon: Flame, big: "+1000", small: "Avis cumulés" },
-              { icon: Leaf, big: "100%", small: "Halal" },
-              { icon: UtensilsCrossed, big: "3", small: "Façons : sur place, emporter, livraison" },
+              { icon: Star, node: <><CountUp to={4.3} decimals={1} />★</>, small: "Note moyenne" },
+              { icon: Flame, node: <><CountUp to={1000} prefix="+" /></>, small: "Avis cumulés" },
+              { icon: Leaf, node: <><CountUp to={100} suffix="%" /></>, small: "Halal" },
+              { icon: UtensilsCrossed, node: "3 modes", small: "Sur place · emporter · livraison" },
             ].map((s, i) => (
               <Card key={i} className="bg-card">
                 <CardContent className="p-6">
                   <s.icon className="size-5 text-primary" />
-                  <p className="mt-3 font-serif text-3xl font-bold">{s.big}</p>
+                  <p className="mt-3 font-serif text-3xl font-bold">{s.node}</p>
                   <p className="text-sm text-muted-foreground">{s.small}</p>
                 </CardContent>
               </Card>
@@ -232,6 +241,19 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Bandeau spécialités défilant */}
+      <div className="border-b bg-primary py-3 text-primary-foreground">
+        <Marquee
+          items={["Adana", "Kebab maison", "Lahmacun", "Grillades au feu", "Aubergine farcie", "100% Halal", "Brochettes", "Baklava", "Fait minute"]}
+          duration="30s"
+          renderItem={(label) => (
+            <span className="flex items-center gap-3 px-2 font-serif text-lg font-medium">
+              {label} <Flame className="size-4 opacity-70" />
+            </span>
+          )}
+        />
+      </div>
 
       {/* Carte */}
       <section id="carte" className="border-b py-20">
@@ -270,9 +292,23 @@ export default function App() {
             <Eyebrow>En images</Eyebrow>
             <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight md:text-4xl">L'ambiance & les assiettes</h2>
           </div>
-          <div className="mt-12">
+          <Reveal className="mt-12">
             <Carousel slides={gallery} />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Avis clients */}
+      <section className="border-b py-20">
+        <div className="container">
+          <div className="mx-auto max-w-xl text-center">
+            <Eyebrow><Star className="size-3.5 fill-primary text-primary" /> Avis clients</Eyebrow>
+            <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight md:text-4xl">Ils nous recommandent</h2>
+            <p className="mt-3 text-muted-foreground">Note moyenne de 4,3/5 cumulée sur plus de 1000 avis.</p>
           </div>
+        </div>
+        <div className="mt-12">
+          <Testimonials />
         </div>
       </section>
 
@@ -315,9 +351,9 @@ export default function App() {
             </Card>
           </div>
 
-          <div className="mt-6">
+          <Reveal className="mt-6">
             <DirectionsMap />
-          </div>
+          </Reveal>
         </div>
       </section>
 
