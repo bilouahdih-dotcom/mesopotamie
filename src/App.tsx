@@ -28,8 +28,9 @@ import { DirectionsMap } from "@/components/DirectionsMap";
 const PHONE = "01 39 47 03 82";
 const TEL = "tel:0139470382";
 
-// ⚠️ Liens de livraison : remplacer par la vraie page du restaurant une fois confirmée
-const UBER_EATS = "https://www.ubereats.com/fr/search?q=Restaurant%20M%C3%A9sopotamie%20Argenteuil";
+// Lien Uber Eats : vraie page de la boutique Mésopotamie
+const UBER_EATS = "https://www.ubereats.com/fr/store/mesopotamie/GuudggDwSwqBORrTovnyzQ";
+// ⚠️ Deliveroo : lien de recherche provisoire (à remplacer si le resto a une page Deliveroo)
 const DELIVEROO = "https://deliveroo.fr/fr/search?q=Restaurant%20M%C3%A9sopotamie%20Argenteuil";
 
 function DeliveryButtons({ className = "" }: { className?: string }) {
