@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigation, LocateFixed, Car, Footprints, Loader2, ExternalLink } from "lucide-react";
+import { Navigation, LocateFixed, Car, Footprints, Loader2, ExternalLink, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Coordonnées GPS du restaurant (76 rue Paul Vaillant Couturier, Argenteuil)
@@ -112,14 +112,31 @@ export function DirectionsMap() {
       </div>
 
       {/* Carte */}
-      <div className="overflow-hidden rounded-xl border">
+      <div className="relative min-h-[380px] overflow-hidden rounded-xl border shadow-sm">
         <iframe
           title="Carte Restaurant Mésopotamie"
-          className="h-full min-h-[360px] w-full"
+          className="absolute inset-0 h-full w-full"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          src={`https://www.google.com/maps?q=${DEST}&z=15&output=embed`}
+          src={`https://www.google.com/maps?q=${DEST}&z=16&output=embed`}
         />
+        {/* Carte d'info flottante */}
+        <div className="absolute inset-x-4 bottom-4 rounded-xl border bg-background/95 p-4 shadow-lg backdrop-blur sm:inset-x-auto sm:left-4 sm:max-w-[18rem]">
+          <div className="flex items-start gap-3">
+            <div className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+              <MapPin className="size-4" />
+            </div>
+            <div>
+              <p className="font-serif font-semibold leading-tight">Restaurant Mésopotamie</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">76 rue Paul Vaillant Couturier, 95100 Argenteuil</p>
+            </div>
+          </div>
+          <Button asChild size="sm" className="mt-3 w-full">
+            <a href={directionsUrl} target="_blank" rel="noreferrer">
+              <Navigation /> Voir sur Google Maps
+            </a>
+          </Button>
+        </div>
       </div>
     </div>
   );
