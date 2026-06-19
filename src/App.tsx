@@ -15,14 +15,45 @@ import {
   CreditCard,
   Accessibility,
   ArrowRight,
+  ShoppingBag,
+  Bike,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Carousel } from "@/components/Carousel";
+import { DirectionsMap } from "@/components/DirectionsMap";
 
 const PHONE = "01 39 47 03 82";
 const TEL = "tel:0139470382";
+
+// ⚠️ Liens de livraison : remplacer par la vraie page du restaurant une fois confirmée
+const UBER_EATS = "https://www.ubereats.com/fr/search?q=Restaurant%20M%C3%A9sopotamie%20Argenteuil";
+const DELIVEROO = "https://deliveroo.fr/fr/search?q=Restaurant%20M%C3%A9sopotamie%20Argenteuil";
+
+function DeliveryButtons({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex flex-wrap gap-3 ${className}`}>
+      <a
+        href={UBER_EATS}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex h-11 items-center gap-2 rounded-full bg-[#06C167] px-5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
+      >
+        <ShoppingBag className="size-4" /> Uber Eats
+      </a>
+      <a
+        href={DELIVEROO}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex h-11 items-center gap-2 rounded-full bg-[#00CCBC] px-5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
+      >
+        <Bike className="size-4" /> Deliveroo
+      </a>
+    </div>
+  );
+}
 
 const nav = [
   { href: "#about", label: "Le restaurant" },
@@ -53,12 +84,13 @@ const hours = [
 ];
 
 const gallery = [
-  "photo-1561758033-d89a9ad46330",
-  "photo-1633321702518-7feccafb94d5",
-  "photo-1599487488170-d11ec9c172f0",
-  "photo-1606491956689-2ea866880c84",
-  "photo-1530469912745-a215c6b256ea",
-  "photo-1540713434306-58505cf1b6fc",
+  { id: "photo-1561758033-d89a9ad46330", alt: "Kebab grillé" },
+  { id: "photo-1633321702518-7feccafb94d5", alt: "Assortiment de grillades" },
+  { id: "photo-1599487488170-d11ec9c172f0", alt: "Assiette généreuse" },
+  { id: "photo-1606491956689-2ea866880c84", alt: "Spécialité turque" },
+  { id: "photo-1530469912745-a215c6b256ea", alt: "Brochettes au charbon" },
+  { id: "photo-1540713434306-58505cf1b6fc", alt: "Baklava maison" },
+  { id: "photo-1555939594-58d7cb561ad1", alt: "Grillades variées" },
 ];
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -136,6 +168,10 @@ export default function App() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg"><a href="#carte">Découvrir la carte <ArrowRight /></a></Button>
               <Button asChild size="lg" variant="outline"><a href={TEL}><Phone /> {PHONE}</a></Button>
+            </div>
+            <div className="mt-5">
+              <p className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">Livraison à domicile</p>
+              <DeliveryButtons />
             </div>
             <div className="mt-8 flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex">{[...Array(5)].map((_, i) => <Star key={i} className="size-4 fill-primary text-primary" />)}</div>
@@ -233,16 +269,8 @@ export default function App() {
             <Eyebrow>En images</Eyebrow>
             <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight md:text-4xl">L'ambiance & les assiettes</h2>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3">
-            {gallery.map((id) => (
-              <img
-                key={id}
-                src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`}
-                alt="Plat du restaurant Mésopotamie"
-                loading="lazy"
-                className="aspect-square w-full rounded-xl border object-cover transition-transform duration-300 hover:scale-[1.02]"
-              />
-            ))}
+          <div className="mt-12">
+            <Carousel slides={gallery} />
           </div>
         </div>
       </section>
@@ -286,14 +314,8 @@ export default function App() {
             </Card>
           </div>
 
-          <div className="mt-6 overflow-hidden rounded-xl border">
-            <iframe
-              title="Carte Restaurant Mésopotamie"
-              className="h-[340px] w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=76+rue+Paul+Vaillant+Couturier+95100+Argenteuil&output=embed"
-            />
+          <div className="mt-6">
+            <DirectionsMap />
           </div>
         </div>
       </section>
@@ -305,9 +327,12 @@ export default function App() {
             <h2 className="font-serif text-3xl font-bold md:text-4xl">Une envie de grillades ce soir ?</h2>
             <p className="mt-2 text-primary-foreground/90">Appelez-nous pour commander ou réserver. À emporter et livraison sur Argenteuil.</p>
           </div>
-          <Button asChild size="lg" variant="secondary" className="shrink-0">
-            <a href={TEL}><Phone /> {PHONE}</a>
-          </Button>
+          <div className="flex shrink-0 flex-col items-center gap-3 sm:flex-row">
+            <Button asChild size="lg" variant="secondary">
+              <a href={TEL}><Phone /> {PHONE}</a>
+            </Button>
+            <DeliveryButtons />
+          </div>
         </div>
       </section>
 
