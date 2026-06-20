@@ -10,8 +10,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Outfit", "system-ui", "sans-serif"],
-        display: ["Cormorant Garamond", "Georgia", "serif"],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Segoe UI"', 'Inter', 'Roboto', 'system-ui', 'sans-serif'],
+        display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -54,15 +54,15 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        glow: "0 0 60px -12px hsl(var(--primary) / 0.35)",
-        "glow-gold": "0 0 40px -8px hsl(var(--accent) / 0.4)",
-        card: "0 4px 24px -4px hsl(24 18% 10% / 0.08)",
-        elevated: "0 20px 60px -20px hsl(24 18% 10% / 0.2)",
+        glow: "0 6px 20px -8px rgba(0,0,0,0.12)",
+        "glow-gold": "0 6px 20px -8px rgba(0,0,0,0.12)",
+        card: "0 2px 16px -6px rgba(0,0,0,0.10)",
+        elevated: "0 18px 50px -24px rgba(0,0,0,0.22)",
       },
       keyframes: {
         "fade-up": {
-          from: { opacity: "0", transform: "translateY(24px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
+          from: { opacity: "0", transform: "translateY(28px)", filter: "blur(10px)" },
+          to: { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
         },
         "fade-in": {
           from: { opacity: "0" },

@@ -46,7 +46,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
-    strictPort: true,
+    // Port assigné par l'hôte (PORT) sinon 5173 par défaut
+    port: Number(process.env.PORT) || 5173,
   },
 });
