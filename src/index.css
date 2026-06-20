@@ -11,27 +11,27 @@
     --card: 0 0% 100%;
     --card-foreground: 240 6% 11%;
 
-    --primary: 211 100% 45%; /* #0071e3 bleu Apple */
+    --primary: 4 64% 42%; /* rouge sobre brique #b12f27 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 14% 96%; /* #f5f5f7 gris Apple */
+    --secondary: 30 12% 96%; /* gris chaud léger */
     --secondary-foreground: 240 6% 11%;
 
-    --muted: 240 14% 96%;
-    --muted-foreground: 240 3% 44%; /* #6e6e73 */
+    --muted: 30 12% 96%;
+    --muted-foreground: 240 3% 44%;
 
-    --accent: 211 100% 45%; /* bleu (remplace l'or) */
+    --accent: 4 64% 42%; /* rouge (accent) */
     --accent-foreground: 0 0% 100%;
 
-    --gold: 211 100% 45%;
+    --gold: 4 64% 42%;
     --gold-foreground: 0 0% 100%;
 
-    --surface-dark: 0 0% 0%; /* sections noires Apple */
-    --surface-dark-foreground: 240 14% 96%;
+    --surface-dark: 6 24% 9%; /* sections sombres teintées rouge */
+    --surface-dark-foreground: 30 14% 94%;
 
-    --border: 240 6% 86%; /* #d2d2d7 */
-    --input: 240 6% 86%;
-    --ring: 211 100% 45%;
+    --border: 30 10% 86%;
+    --input: 30 10% 86%;
+    --ring: 4 64% 42%;
 
     --radius: 0.75rem;
   }
