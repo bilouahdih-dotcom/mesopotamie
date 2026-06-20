@@ -43,7 +43,7 @@ function DeliveryButtons({ className = "" }: { className?: string }) {
       <a
         href={UBER_EATS}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className="inline-flex h-11 items-center gap-2 rounded-full bg-[#06C167] px-5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
       >
         <ShoppingBag className="size-4" /> Uber Eats
@@ -51,7 +51,7 @@ function DeliveryButtons({ className = "" }: { className?: string }) {
       <a
         href={DELIVEROO}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className="inline-flex h-11 items-center gap-2 rounded-full bg-[#00CCBC] px-5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
       >
         <Bike className="size-4" /> Deliveroo

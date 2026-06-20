@@ -105,7 +105,7 @@ export function DirectionsMap() {
         )}
 
         <Button asChild variant="outline" className="mt-4 w-full">
-          <a href={directionsUrl} target="_blank" rel="noreferrer">
+          <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
             <Navigation /> Ouvrir l'itinéraire <ExternalLink className="size-3.5" />
           </a>
         </Button>
@@ -118,6 +118,7 @@ export function DirectionsMap() {
           className="absolute inset-0 h-full w-full"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
           src={`https://www.google.com/maps?q=${DEST}&z=16&output=embed`}
         />
         {/* Carte d'info flottante */}
@@ -132,7 +133,7 @@ export function DirectionsMap() {
             </div>
           </div>
           <Button asChild size="sm" className="mt-3 w-full">
-            <a href={directionsUrl} target="_blank" rel="noreferrer">
+            <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
               <Navigation /> Voir sur Google Maps
             </a>
           </Button>
