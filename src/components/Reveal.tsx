@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useInView } from "@/hooks/useInView";
 
 // Révèle son contenu en fondu/translation quand il entre dans le viewport
 export function Reveal({
@@ -12,29 +13,7 @@ export function Reveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const reveal = () => setShown(true);
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          reveal();
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
-    );
-    obs.observe(el);
-    // Filet de sécurité : révèle le contenu même si l'observer ne se déclenche pas
-    const fallback = window.setTimeout(reveal, 1200);
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(fallback);
-    };
-  }, []);
+  const shown = useInView(ref, { threshold: 0.15 });
 
   return (
     <div

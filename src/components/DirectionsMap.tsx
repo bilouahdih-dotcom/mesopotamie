@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { Navigation, LocateFixed, Car, Footprints, Loader2, ExternalLink, MapPin } from "lucide-react";
+import {
+  Navigation,
+  LocateFixed,
+  Car,
+  Footprints,
+  Loader2,
+  ExternalLink,
+  MapPin,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { restaurant } from "@/data/restaurant";
 
-// Coordonnées GPS du restaurant (76 rue Paul Vaillant Couturier, Argenteuil)
-const REST = { lat: 48.9437353, lng: 2.2496512 };
+const REST = restaurant.coords;
 const DEST = `${REST.lat},${REST.lng}`;
 
-// Distance à vol d'oiseau (formule de Haversine), en km
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number) {
   const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -44,12 +51,11 @@ export function DirectionsMap() {
       (pos) => {
         const { latitude, longitude } = pos.coords;
         const straight = haversineKm(latitude, longitude, REST.lat, REST.lng);
-        // Facteur ~1,3 pour approcher la distance par la route
         const road = straight * 1.3;
         setTrip({
           km: road,
-          car: (road / 28) * 60, // ~28 km/h en zone urbaine
-          walk: (straight / 4.8) * 60, // ~4,8 km/h à pied
+          car: (road / 28) * 60,
+          walk: (straight / 4.8) * 60,
           origin: { lat: latitude, lng: longitude },
         });
         setStatus("done");
@@ -67,72 +73,79 @@ export function DirectionsMap() {
     : `https://www.google.com/maps/dir/?api=1&destination=${DEST}`;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
-      {/* Panneau calcul de trajet */}
-      <div className="flex flex-col rounded-xl border bg-card p-6">
-        <div className="flex items-center gap-2">
-          <div className="grid size-10 place-items-center rounded-full bg-accent text-accent-foreground">
+    <div className="grid gap-6 overflow-hidden rounded-3xl border border-border/60 bg-card shadow-card lg:grid-cols-[1fr_1.5fr]">
+      <div className="flex flex-col p-8">
+        <div className="flex items-center gap-3">
+          <div className="grid size-12 place-items-center rounded-xl bg-primary/10 text-primary">
             <Navigation className="size-5" />
           </div>
-          <h3 className="font-serif text-xl font-semibold">Combien de temps pour venir&nbsp;?</h3>
+          <h3 className="font-display text-2xl font-semibold">Combien de temps pour venir ?</h3>
         </div>
-        <p className="mt-3 text-sm text-muted-foreground">
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
           Estimez votre temps de trajet jusqu'au restaurant depuis votre position actuelle.
         </p>
 
-        <Button onClick={calculate} disabled={status === "loading"} className="mt-5 w-full">
+        <Button onClick={calculate} disabled={status === "loading"} className="mt-6 w-full">
           {status === "loading" ? <Loader2 className="animate-spin" /> : <LocateFixed />}
           {status === "loading" ? "Localisation…" : "Utiliser ma position"}
         </Button>
 
         {status === "done" && trip && (
-          <div className="mt-5 space-y-3 rounded-lg border bg-secondary/50 p-4 text-sm animate-fade-up">
-            <p className="font-medium">≈ {trip.km.toFixed(1)} km du restaurant</p>
+          <div className="mt-6 space-y-4 rounded-2xl border border-border/60 bg-secondary/40 p-5 text-sm animate-fade-up">
+            <p className="font-display text-lg font-semibold">≈ {trip.km.toFixed(1)} km du restaurant</p>
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 text-muted-foreground"><Car className="size-4 text-primary" /> En voiture</span>
+              <span className="inline-flex items-center gap-2 text-muted-foreground">
+                <Car className="size-4 text-accent" /> En voiture
+              </span>
               <span className="font-semibold">{formatMin(trip.car)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 text-muted-foreground"><Footprints className="size-4 text-primary" /> À pied</span>
+              <span className="inline-flex items-center gap-2 text-muted-foreground">
+                <Footprints className="size-4 text-accent" /> À pied
+              </span>
               <span className="font-semibold">{formatMin(trip.walk)}</span>
             </div>
-            <p className="text-xs italic text-muted-foreground">Estimation indicative selon les conditions de circulation.</p>
+            <p className="text-xs italic text-muted-foreground">
+              Estimation indicative selon les conditions de circulation.
+            </p>
           </div>
         )}
 
         {status === "error" && (
-          <p className="mt-4 rounded-lg bg-accent/60 p-3 text-sm text-accent-foreground">{error}</p>
+          <p className="mt-4 rounded-xl bg-primary/10 p-4 text-sm text-primary">{error}</p>
         )}
 
-        <Button asChild variant="outline" className="mt-4 w-full">
+        <Button asChild variant="outline" className="mt-5 w-full">
           <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
             <Navigation /> Ouvrir l'itinéraire <ExternalLink className="size-3.5" />
           </a>
         </Button>
       </div>
 
-      {/* Carte */}
-      <div className="relative min-h-[380px] overflow-hidden rounded-xl border shadow-sm">
+      <div className="relative min-h-[400px] border-t border-border/60 lg:min-h-[480px] lg:border-l lg:border-t-0">
         <iframe
           title="Carte Restaurant Mésopotamie"
-          className="absolute inset-0 h-full w-full"
+          className="absolute inset-0 h-full w-full grayscale-[20%] contrast-[1.05]"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
           src={`https://www.google.com/maps?q=${DEST}&z=16&output=embed`}
         />
-        {/* Carte d'info flottante */}
-        <div className="absolute inset-x-4 bottom-4 rounded-xl border bg-background/95 p-4 shadow-lg backdrop-blur sm:inset-x-auto sm:left-4 sm:max-w-[18rem]">
+        <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-border/60 bg-card/95 p-5 shadow-elevated backdrop-blur-xl sm:inset-x-auto sm:left-4 sm:max-w-[19rem]">
           <div className="flex items-start gap-3">
-            <div className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
               <MapPin className="size-4" />
             </div>
             <div>
-              <p className="font-serif font-semibold leading-tight">Restaurant Mésopotamie</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">76 rue Paul Vaillant Couturier, 95100 Argenteuil</p>
+              <p className="font-display text-lg font-semibold leading-tight">
+                Restaurant Mésopotamie
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {restaurant.address.street}, {restaurant.address.postal} {restaurant.address.city}
+              </p>
             </div>
           </div>
-          <Button asChild size="sm" className="mt-3 w-full">
+          <Button asChild size="sm" className="mt-4 w-full">
             <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
               <Navigation /> Voir sur Google Maps
             </a>

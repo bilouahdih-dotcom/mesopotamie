@@ -8,30 +8,31 @@ type Slide = { id: string; alt: string };
 export function Carousel({ slides }: { slides: Slide[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
 
-  // Met à jour la pastille active selon la position de défilement
+  const slideWidth = (el: HTMLDivElement) => el.scrollWidth / slides.length;
+
   const onScroll = () => {
     const el = trackRef.current;
     if (!el) return;
-    const slideWidth = el.scrollWidth / slides.length;
-    setActive(Math.round(el.scrollLeft / slideWidth));
+    const i = Math.round(el.scrollLeft / slideWidth(el));
+    activeRef.current = i;
+    setActive(i);
   };
 
   const scrollTo = (index: number) => {
     const el = trackRef.current;
     if (!el) return;
-    const slideWidth = el.scrollWidth / slides.length;
     const next = (index + slides.length) % slides.length;
-    el.scrollTo({ left: next * slideWidth, behavior: "smooth" });
+    el.scrollTo({ left: next * slideWidth(el), behavior: "smooth" });
   };
 
-  // Lecture automatique (pause au survol)
   const [paused, setPaused] = useState(false);
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => scrollTo(active + 1), 4000);
+    const t = setInterval(() => scrollTo(activeRef.current + 1), 4500);
     return () => clearInterval(t);
-  }, [active, paused]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [paused]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
@@ -42,27 +43,38 @@ export function Carousel({ slides }: { slides: Slide[] }) {
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {slides.map((s) => (
-          <div key={s.id} className="w-[85%] shrink-0 snap-center sm:w-[55%] lg:w-[42%]">
-            <img
-              src={`https://images.unsplash.com/${s.id}?auto=format&fit=crop&w=900&q=80`}
-              alt={s.alt}
-              loading="lazy"
-              className="aspect-[4/3] w-full rounded-2xl border object-cover shadow-sm"
-            />
+        {slides.map((s, i) => (
+          <div
+            key={s.id}
+            className="group w-[88%] shrink-0 snap-center sm:w-[58%] lg:w-[38%]"
+          >
+            <div className="relative overflow-hidden rounded-2xl shadow-elevated">
+              <img
+                src={`https://images.unsplash.com/${s.id}?auto=format&fit=crop&w=900&q=85`}
+                alt={s.alt}
+                loading="lazy"
+                className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-dark/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="absolute bottom-0 left-0 right-0 translate-y-full p-5 transition-transform duration-500 group-hover:translate-y-0">
+                <p className="font-display text-lg font-medium text-white">{s.alt}</p>
+              </div>
+              <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-surface-dark backdrop-blur-sm">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Flèches */}
       <Button
         variant="outline"
         size="icon"
         onClick={() => scrollTo(active - 1)}
         aria-label="Image précédente"
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/90 shadow-md backdrop-blur"
+        className="absolute -left-2 top-1/2 z-10 hidden size-11 -translate-y-1/2 rounded-full border-border/60 bg-card/95 shadow-card backdrop-blur md:flex"
       >
         <ChevronLeft />
       </Button>
@@ -71,21 +83,22 @@ export function Carousel({ slides }: { slides: Slide[] }) {
         size="icon"
         onClick={() => scrollTo(active + 1)}
         aria-label="Image suivante"
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/90 shadow-md backdrop-blur"
+        className="absolute -right-2 top-1/2 z-10 hidden size-11 -translate-y-1/2 rounded-full border-border/60 bg-card/95 shadow-card backdrop-blur md:flex"
       >
         <ChevronRight />
       </Button>
 
-      {/* Pastilles */}
-      <div className="mt-5 flex justify-center gap-2">
+      <div className="mt-8 flex justify-center gap-2">
         {slides.map((s, i) => (
           <button
             key={s.id}
             onClick={() => scrollTo(i)}
             aria-label={`Aller à l'image ${i + 1}`}
             className={cn(
-              "h-2 rounded-full transition-all",
-              i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-muted-foreground/40"
+              "h-1.5 rounded-full transition-all duration-300",
+              i === active
+                ? "w-8 bg-accent"
+                : "w-1.5 bg-border hover:bg-muted-foreground/40"
             )}
           />
         ))}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/hooks/useInView";
 
 // Compteur animé qui démarre quand il devient visible
 export function CountUp({
@@ -15,38 +16,22 @@ export function CountUp({
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
+  const inView = useInView(ref, { threshold: 0.4 });
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const begin = () => {
-      if (started.current) return;
-      started.current = true;
-      const start = performance.now();
-      const tick = (now: number) => {
-        const p = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-        setValue(to * eased);
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
+    if (!inView) return;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      setValue(to * eased);
+      if (p < 1) raf = requestAnimationFrame(tick);
     };
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) begin();
-      },
-      { threshold: 0.4 }
-    );
-    obs.observe(el);
-    // Filet de sécurité : démarre le compteur même si l'observer ne se déclenche pas
-    const fallback = window.setTimeout(begin, 1600);
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(fallback);
-    };
-  }, [to, duration]);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, to, duration]);
 
   return (
     <span ref={ref}>
