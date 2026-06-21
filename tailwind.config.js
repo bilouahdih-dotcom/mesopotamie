@@ -84,6 +84,11 @@ export default {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
+        aurora: {
+          "0%, 100%": { transform: "translate(0,0) scale(1)" },
+          "33%": { transform: "translate(40px,-30px) scale(1.15)" },
+          "66%": { transform: "translate(-30px,25px) scale(0.92)" },
+        },
       },
       animation: {
         "fade-up": "fade-up .8s cubic-bezier(0.16, 1, 0.3, 1) both",
@@ -92,6 +97,7 @@ export default {
         shimmer: "shimmer 3s linear infinite",
         float: "float 6s ease-in-out infinite",
         "scale-in": "scale-in .5s cubic-bezier(0.16, 1, 0.3, 1) both",
+        aurora: "aurora 18s ease-in-out infinite",
       },
     },
   },

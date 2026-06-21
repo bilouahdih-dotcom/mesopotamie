@@ -3,6 +3,7 @@ import { Flame } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Marquee } from "@/components/Marquee";
 import { Reveal } from "@/components/Reveal";
+import { TiltCard } from "@/components/TiltCard";
 import { SectionHead } from "@/components/SectionHead";
 import {
   dishes,
@@ -81,7 +82,8 @@ export function MenuSection() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((d, i) => (
             <Reveal key={d.name} delay={(i % 4) * 80}>
-              <article className="card-lift group overflow-hidden rounded-2xl border border-border/60 bg-card shadow-card">
+              <TiltCard className="h-full [transform-style:preserve-3d]">
+              <article className="card-lift group h-full overflow-hidden rounded-2xl border border-border/60 bg-card shadow-card">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src={unsplashUrl(d.image, 600)}
@@ -106,6 +108,7 @@ export function MenuSection() {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d.desc}</p>
                 </div>
               </article>
+              </TiltCard>
             </Reveal>
           ))}
         </div>

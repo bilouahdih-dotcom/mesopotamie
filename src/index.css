@@ -103,6 +103,16 @@
   .card-lift {
     @apply transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-elevated;
   }
+
+  /* Texte dégradé animé (shimmer) rouge → ambre */
+  .text-shimmer {
+    background-image: linear-gradient(110deg, #b03027 20%, #e0853c 50%, #b03027 80%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 5s linear infinite;
+  }
 }
 
 @layer utilities {

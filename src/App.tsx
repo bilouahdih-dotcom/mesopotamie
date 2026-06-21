@@ -7,6 +7,8 @@ import { ReviewsSection } from "@/components/ReviewsSection";
 import { InfoSection } from "@/components/InfoSection";
 import { CtaSection, Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { Section } from "@/components/Section";
+import { FoodMarquee } from "@/components/FoodMarquee";
 
 export default function App() {
   return (
@@ -15,13 +17,14 @@ export default function App() {
       <Header />
       <main>
         <Hero />
-        <AboutSection />
+        <FoodMarquee />
+        <Section><AboutSection /></Section>
         <SpecialtiesMarquee />
-        <MenuSection />
-        <GallerySection />
-        <ReviewsSection />
-        <InfoSection />
-        <CtaSection />
+        <Section><MenuSection /></Section>
+        <Section><GallerySection /></Section>
+        <Section><ReviewsSection /></Section>
+        <Section><InfoSection /></Section>
+        <Section><CtaSection /></Section>
       </main>
       <Footer />
     </div>
